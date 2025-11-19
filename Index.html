@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXPOTUR - Live Stream</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1f3a 0%, #2d1b4e 100%);
+            color: white;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo::before {
+            content: '';
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #e621c6, #6b4de6);
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+        }
+
+        .left-section {
+            position: relative;
+            z-index: 2;
+        }
+
+        .title {
+            font-size: 72px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            background: linear-gradient(45deg, #fff, #e621c6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Video Player Container */
+        .video-container {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 450px;
+            height: 450px;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 4px solid transparent;
+            background: linear-gradient(#1a1f3a, #1a1f3a) padding-box,
+                        linear-gradient(45deg, #e621c6, #6b4de6) border-box;
+        }
+
+        #youtube-player {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 50%;
+        }
+
+        /* Decorative Elements */
+        .decorative-element {
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .dots-pattern {
+            width: 80px;
+            height: 80px;
+            background-image: radial-gradient(circle, #e621c6 2px, transparent 2px);
+            background-size: 15px 15px;
+            opacity: 0.3;
+        }
+
+        .dots-1 {
+            top: 10%;
+            left: 5%;
+        }
+
+        .dots-2 {
+            bottom: 15%;
+            right: 10%;
+        }
+
+        .wave-line {
+            width: 150px;
+            height: 50px;
+            border: 2px solid #6b4de6;
+            border-radius: 50%;
+            border-top: none;
+            opacity: 0.4;
+        }
+
+        .wave-1 {
+            top: 15%;
+            right: 5%;
+            transform: rotate(-20deg);
+        }
+
+        .wave-2 {
+            bottom: 20%;
+            left: 3%;
+            transform: rotate(160deg);
+        }
+
+        .diagonal-lines {
+            width: 100px;
+            height: 4px;
+            background: repeating-linear-gradient(
+                90deg,
+                #e621c6 0px,
+                #e621c6 20px,
+                transparent 20px,
+                transparent 30px
+            );
+            opacity: 0.5;
+        }
+
+        .line-1 {
+            top: 25%;
+            right: 15%;
+            transform: rotate(30deg);
+        }
+
+        .line-2 {
+            bottom: 30%;
+            left: 8%;
+            transform: rotate(-30deg);
+        }
+
+        .circle-accent {
+            width: 60px;
+            height: 60px;
+            border: 3px solid #6b4de6;
+            border-radius: 50%;
+            opacity: 0.4;
+        }
+
+        .circle-1 {
+            top: 40%;
+            left: 2%;
+        }
+
+        .circle-2 {
+            top: 10%;
+            right: 20%;
+        }
+
+        .x-mark {
+            width: 40px;
+            height: 40px;
+            position: relative;
+            opacity: 0.5;
+        }
+
+        .x-mark::before,
+        .x-mark::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 4px;
+            background: #e621c6;
+            top: 50%;
+            left: 0;
+        }
+
+        .x-mark::before {
+            transform: rotate(45deg);
+        }
+
+        .x-mark::after {
+            transform: rotate(-45deg);
+        }
+
+        .x-1 {
+            top: 20%;
+            right: 8%;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .title {
+                font-size: 48px;
+            }
+
+            .video-wrapper {
+                width: 350px;
+                height: 350px;
+            }
+
+            #youtube-player {
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        /* Animation */
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .decorative-element {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .decorative-element:nth-child(even) {
+            animation-delay: 0.5s;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span>Logo</span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Left Section -->
+            <div class="left-section">
+                <h1 class="title">EXPOTUR</h1>
+            </div>
+
+            <!-- Video Player Section -->
+            <div class="video-container">
+                <div class="video-wrapper">
+                    <iframe 
+                        id="youtube-player"
+                        src="https://www.youtube.com/embed/VOJYRHs98Dg?autoplay=1&controls=1&rel=0&fs=1&modestbranding=0&playsinline=1"
+                        style="width: 100%; height: 100%; border: none; border-radius: 50%;"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+        </main>
+
+        <!-- Decorative Elements -->
+        <div class="decorative-element dots-pattern dots-1"></div>
+        <div class="decorative-element dots-pattern dots-2"></div>
+        <div class="decorative-element wave-line wave-1"></div>
+        <div class="decorative-element wave-line wave-2"></div>
+        <div class="decorative-element diagonal-lines line-1"></div>
+        <div class="decorative-element diagonal-lines line-2"></div>
+        <div class="decorative-element circle-accent circle-1"></div>
+        <div class="decorative-element circle-accent circle-2"></div>
+        <div class="decorative-element x-mark x-1"></div>
+    </div>
+
+    <script>
+        // ========================================
+        // CONFIGURACIÓN DE YOUTUBE LIVE
+        // ========================================
+        var STREAM_URL = 'https://www.youtube.com/live/VOJYRHs98Dg';
+        
+        console.log('✓ Landing page EXPOTUR cargada');
+        console.log('YouTube Live iniciando automáticamente...');
+    </script>
+</body>
+</html>
